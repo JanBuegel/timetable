@@ -35,7 +35,7 @@ app.get('/stages', (req, res) => {
 app.get('/', (req, res) => {
   Event.find().then(events => {
     const eventsGroupedByDate = groupEventsByDate(events);
-    res.render('index', { eventsGroupedByDate });
+    res.render('timetable', { eventsGroupedByDate });
   });
 });
 
