@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     const filterButton = document.querySelector('.filter-button');
     const searchButton = document.querySelector('.search-button');
+    const resetButton = document.querySelector('.reset-button');
     const modal = document.querySelector('.modal');
     const closeButton = document.querySelector('.close-button');
     const stageList = document.querySelector('.stage-list');
@@ -49,30 +50,49 @@ document.addEventListener('DOMContentLoaded', () => {
       const searchTerm = prompt('Enter search term:');
       if (searchTerm) {
         searchEvents(searchTerm);
+        resetButton.classList.remove('hidden');
       }
+    });
+  
+    resetButton.addEventListener('click', () => {
+      resetSearch();
+      resetButton.classList.add('hidden');
     });
   
     function filterByStage(stage) {
       const events = document.querySelectorAll('.event');
+      let found = false;
       events.forEach(event => {
         const eventStage = event.querySelector('.details p:nth-child(2)').textContent;
         if (!stage || eventStage.toLowerCase() === stage.toLowerCase()) {
           event.style.display = 'flex';
+          found = true;
         } else {
           event.style.display = 'none';
         }
       });
+      if (found) resetButton.classList.remove('hidden');
     }
   
     function searchEvents(term) {
       const events = document.querySelectorAll('.event');
+      let found = false;
       events.forEach(event => {
         const eventName = event.querySelector('.details h2').textContent;
         if (eventName.toLowerCase().includes(term.toLowerCase())) {
           event.style.display = 'flex';
+          found = true;
         } else {
           event.style.display = 'none';
         }
+      });
+      if (found) resetButton.classList.remove('hidden');
+    }
+  
+    function resetSearch() {
+      const events = document.querySelectorAll('.event');
+      events.forEach(event => {
+        event.style.display = 'flex';
       });
     }
   });

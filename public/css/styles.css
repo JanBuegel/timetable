@@ -61,7 +61,7 @@ body {
     color: #bbb;
   }
   
-  .filter-button, .search-button {
+  .filter-button, .search-button, .reset-button {
     position: fixed;
     bottom: 20px;
     background-color: #0073e6;
@@ -85,12 +85,21 @@ body {
     left: 20px;
   }
   
-  .filter-button:hover, .search-button:hover {
+  .reset-button {
+    left: 100px;
+  }
+  
+  .filter-button:hover, .search-button:hover, .reset-button:hover {
     background-color: #005bb5;
   }
   
   .material-symbols-outlined {
     font-size: 36px;
+  }
+  
+  /* Hide reset button initially */
+  .hidden {
+    display: none;
   }
   
   /* Modal Styles */
@@ -175,13 +184,17 @@ body {
       padding: 30px;
     }
   
-    .filter-button, .search-button {
+    .filter-button, .search-button, .reset-button {
       width: 70px;
       height: 70px;
     }
   
     .material-symbols-outlined {
       font-size: 40px;
+    }
+  
+    .reset-button {
+      left: 110px;
     }
   }
   
