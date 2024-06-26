@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.querySelector('.modal');
     const closeButton = document.querySelector('.close-button');
     const stageList = document.querySelector('.stage-list');
+    const dayButtons = document.querySelectorAll('.day-button');
   
     filterButton.addEventListener('click', () => {
       fetch('/stages')
@@ -59,6 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
       resetButton.classList.add('hidden');
     });
   
+    dayButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const day = button.getAttribute('data-day');
+        filterByDay(day);
+        resetButton.classList.remove('hidden');
+      });
+    });
+  
     function filterByStage(stage) {
       const events = document.querySelectorAll('.event');
       let found = false;
@@ -89,10 +98,26 @@ document.addEventListener('DOMContentLoaded', () => {
       if (found) resetButton.classList.remove('hidden');
     }
   
+    function filterByDay(day) {
+      const eventGroups = document.querySelectorAll('.event-group');
+      eventGroups.forEach(group => {
+        const groupDay = group.getAttribute('data-day');
+        if (groupDay === day) {
+          group.style.display = 'block';
+        } else {
+          group.style.display = 'none';
+        }
+      });
+    }
+  
     function resetSearch() {
       const events = document.querySelectorAll('.event');
       events.forEach(event => {
         event.style.display = 'flex';
+      });
+      const eventGroups = document.querySelectorAll('.event-group');
+      eventGroups.forEach(group => {
+        group.style.display = 'block';
       });
     }
   });

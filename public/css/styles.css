@@ -13,6 +13,80 @@ body {
     color: #fff;
   }
   
+  .day-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .day-button {
+    background-color: #0073e6;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 0.8em;
+    text-align: center;
+  }
+  
+  .day-button p {
+    margin: 0;
+    font-size: 0.6em;
+  }
+  
+  .day-button:hover {
+    background-color: #005bb5;
+  }
+  
+  .filter-button, .search-button, .reset-button {
+    position: fixed;
+    bottom: 20px;
+    background-color: #0073e6;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .filter-button {
+    right: 20px;
+  }
+  
+  .search-button {
+    left: 20px;
+  }
+  
+  .reset-button {
+    left: 100px;
+  }
+  
+  .filter-button:hover, .search-button:hover, .reset-button:hover {
+    background-color: #005bb5;
+  }
+  
+  .material-symbols-outlined {
+    font-size: 36px;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
   .container {
     display: flex;
     flex-direction: column;
@@ -59,47 +133,6 @@ body {
     margin: 5px 0;
     font-size: 1em;
     color: #bbb;
-  }
-  
-  .filter-button, .search-button, .reset-button {
-    position: fixed;
-    bottom: 20px;
-    background-color: #0073e6;
-    color: #fff;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .filter-button {
-    right: 20px;
-  }
-  
-  .search-button {
-    left: 20px;
-  }
-  
-  .reset-button {
-    left: 100px;
-  }
-  
-  .filter-button:hover, .search-button:hover, .reset-button:hover {
-    background-color: #005bb5;
-  }
-  
-  .material-symbols-outlined {
-    font-size: 36px;
-  }
-  
-  /* Hide reset button initially */
-  .hidden {
-    display: none;
   }
   
   /* Modal Styles */
@@ -167,34 +200,42 @@ body {
     .event {
       flex-direction: column;
       align-items: flex-start;
-      padding: 20px;
-      font-size: 1.2em;
+      padding: 40px;
+      font-size: 2.5em;
     }
   
     .event h2 {
-      font-size: 1.8em;
+      font-size: 3em;
     }
   
     .event p {
-      font-size: 1.5em;
+      font-size: 2.5em;
     }
   
     .modal-content {
       width: 90%;
-      padding: 30px;
+      padding: 50px;
     }
   
-    .filter-button, .search-button, .reset-button {
-      width: 70px;
-      height: 70px;
+    .filter-button, .search-button, .reset-button, .day-button {
+      width: 80px;
+      height: 80px;
     }
   
     .material-symbols-outlined {
-      font-size: 40px;
+      font-size: 50px;
     }
   
     .reset-button {
-      left: 110px;
+      left: 120px;
+    }
+  
+    h1 {
+      font-size: 4em;
+    }
+  
+    .event-group-header {
+      font-size: 3em;
     }
   }
   

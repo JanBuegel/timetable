@@ -7,9 +7,25 @@ html
     script(src='/js/main.js')
   body
     h1 Open Flair 2024
+    .day-buttons
+      button.day-button(data-day='Mittwoch')
+        span.material-symbols-outlined calendar_today
+        p Mittwoch
+      button.day-button(data-day='Donnerstag')
+        span.material-symbols-outlined calendar_today
+        p Donnerstag
+      button.day-button(data-day='Freitag')
+        span.material-symbols-outlined calendar_today
+        p Freitag
+      button.day-button(data-day='Samstag')
+        span.material-symbols-outlined calendar_today
+        p Samstag
+      button.day-button(data-day='Sonntag')
+        span.material-symbols-outlined calendar_today
+        p Sonntag
     .container
       each date in Object.keys(eventsGroupedByDate)
-        .event-group
+        .event-group(data-day=date)
           .event-group-header= date
           each event in eventsGroupedByDate[date]
             .event
