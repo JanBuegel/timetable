@@ -1,0 +1,3 @@
+db.events.deleteMany({})
+use open-flair
+use event
