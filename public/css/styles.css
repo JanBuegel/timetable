@@ -205,11 +205,11 @@ h1 {
   }
 
   .event h2 {
-    font-size: 2.2em;
+    font-size: 3em;
   }
 
   .event p {
-    font-size: 2em;
+    font-size: 2.5em;
   }
 
   .modal-content {
@@ -218,8 +218,8 @@ h1 {
   }
 
   .filter-button, .search-button, .reset-button, .day-button {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
   }
 
   .material-symbols-outlined {
@@ -227,7 +227,7 @@ h1 {
   }
 
   .reset-button {
-    left: 120px;
+    left: 140px;
   }
 
   h1 {
