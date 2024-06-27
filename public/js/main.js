@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         allStagesLi.addEventListener('click', () => {
           filterByStage('');
           modal.classList.add('hidden');
+          checkResetButton();
         });
         stageList.appendChild(allStagesLi);
 
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
           li.addEventListener('click', () => {
             filterByStage(stage);
             modal.classList.add('hidden');
+            checkResetButton();
           });
           stageList.appendChild(li);
         });
@@ -173,6 +175,16 @@ document.addEventListener('DOMContentLoaded', () => {
         event.style.display = 'none';
       }
     });
+  }
+
+  function checkResetButton() {
+    const events = document.querySelectorAll('.event');
+    const isFiltered = Array.from(events).some(event => event.style.display === 'none');
+    if (isFiltered) {
+      resetButton.classList.remove('hidden');
+    } else {
+      resetButton.classList.add('hidden');
+    }
   }
 
   function initializeFavorites() {
