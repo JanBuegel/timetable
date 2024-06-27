@@ -218,8 +218,8 @@ h1 {
   }
 
   .filter-button, .search-button, .reset-button, .day-button {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
   }
 
   .material-symbols-outlined {
