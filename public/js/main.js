@@ -3,11 +3,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const filterButton = document.querySelector('.filter-button');
   const resetButton = document.querySelector('.reset-button');
+  const favoriteToggleButton = document.querySelector('.favorite-toggle');
   const modal = document.querySelector('.modal');
   const closeButton = document.querySelector('.close-button');
   const stageList = document.querySelector('.stage-list');
   const dayButtons = document.querySelectorAll('.day-button');
   const searchInput = document.querySelector('#searchInput');
+  const favoriteButtons = document.querySelectorAll('.favorite-button');
+  
+  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  let showFavorites = false;
 
   filterButton.addEventListener('click', () => {
     fetch('/stages')
@@ -18,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add "alle Bühnen" option
         const allStagesLi = document.createElement('li');
         allStagesLi.textContent = 'Alle Bühnen';
+        allStagesLi.classList.add('stage-item');
         allStagesLi.addEventListener('click', () => {
           filterByStage('');
           modal.classList.add('hidden');
@@ -27,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stages.forEach(stage => {
           const li = document.createElement('li');
           li.textContent = stage;
+          li.classList.add('stage-item');
           li.addEventListener('click', () => {
             filterByStage(stage);
             modal.classList.add('hidden');
@@ -62,6 +69,24 @@ document.addEventListener('DOMContentLoaded', () => {
     resetSearch();
     resetButton.classList.add('hidden');
     searchInput.value = '';
+  });
+
+  favoriteToggleButton.addEventListener('click', () => {
+    showFavorites = !showFavorites;
+    if (showFavorites) {
+      displayFavorites();
+      favoriteToggleButton.classList.add('active');
+    } else {
+      resetSearch();
+      favoriteToggleButton.classList.remove('active');
+    }
+  });
+
+  favoriteButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const eventId = button.closest('.event').dataset.id;
+      toggleFavorite(eventId, button);
+    });
   });
 
   dayButtons.forEach(button => {
@@ -124,4 +149,41 @@ document.addEventListener('DOMContentLoaded', () => {
       group.style.display = 'block';
     });
   }
+
+  function toggleFavorite(eventId, button) {
+    if (favorites.includes(eventId)) {
+      favorites = favorites.filter(id => id !== eventId);
+      button.querySelector('span').textContent = 'favorite_border';
+      button.classList.remove('active');
+    } else {
+      favorites.push(eventId);
+      button.querySelector('span').textContent = 'favorite';
+      button.classList.add('active');
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+
+  function displayFavorites() {
+    const events = document.querySelectorAll('.event');
+    events.forEach(event => {
+      const eventId = event.dataset.id;
+      if (favorites.includes(eventId)) {
+        event.style.display = 'flex';
+      } else {
+        event.style.display = 'none';
+      }
+    });
+  }
+
+  function initializeFavorites() {
+    favorites.forEach(eventId => {
+      const event = document.querySelector(`.event[data-id="${eventId}"]`);
+      if (event) {
+        event.querySelector('.favorite-button span').textContent = 'favorite';
+        event.querySelector('.favorite-button').classList.add('active');
+      }
+    });
+  }
+
+  initializeFavorites();
 });
