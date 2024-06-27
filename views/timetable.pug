@@ -1,53 +1,42 @@
 doctype html
 html
   head
-    title Open Flair Festival 2024
+    title Open Flair 2024 Timetable
     link(rel='stylesheet', href='/css/styles.css')
     link(rel='stylesheet', href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200')
-    script(src='/js/main.js')
   body
     h1 Open Flair 2024
+    .search-bar
+      input#searchInput(type="text", placeholder="Suche nach Künstlern")
     .day-buttons
-      button.day-button(data-day='Mittwoch')
-        span.material-symbols-outlined calendar_today
-        p Mittwoch
-      button.day-button(data-day='Donnerstag')
-        span.material-symbols-outlined calendar_today
-        p Donnerstag
-      button.day-button(data-day='Freitag')
-        span.material-symbols-outlined calendar_today
-        p Freitag
-      button.day-button(data-day='Samstag')
-        span.material-symbols-outlined calendar_today
-        p Samstag
-      button.day-button(data-day='Sonntag')
-        span.material-symbols-outlined calendar_today
-        p Sonntag
+      if eventsGroupedByDate
+        each day in Object.keys(eventsGroupedByDate)
+          button.day-button(data-day=day)
+            span= day
     .container
-      each date in Object.keys(eventsGroupedByDate)
-        .event-group(data-day=date)
-          .event-group-header= date
-          each event in eventsGroupedByDate[date]
-            .event
-              .details
-                h2= event.name
-                p= event.stage
-                p= event.time
-    // Add the filter button
+      if eventsGroupedByDate
+        each day in Object.keys(eventsGroupedByDate)
+          .event-group(data-day=day)
+            .event-group-header= day
+            each event in eventsGroupedByDate[day]
+              .event
+                .event-info
+                  h2= event.name
+                  p= event.time
+                  p= event.stage
     .filter-button
-      span.material-symbols-outlined filter_list
-
-    // Add the search button
-    .search-button
-      span.material-symbols-outlined search
-
-    // Add the reset button (initially hidden)
+      span.material-symbols-outlined filter_alt
     .reset-button.hidden
-      span.material-symbols-outlined restart_alt
+      span.material-symbols-outlined refresh
 
-    // Add the modal for the stage filter
+    // Modal for search and filter
     .modal.hidden
       .modal-content
         span.close-button &times;
-        h2 Select Stage
+        h2 Suche und Filter
         ul.stage-list
+          li(onclick="filterByStage('alle bühnen')") Alle Bühnen
+          each stage in ["Seebühne", "E-Werk", "Hofbühne", "Kleinkunstzelt", "RadioBob! Bühne", "Freibühne"]
+            li(onclick=`filterByStage("${stage}")`)= stage
+
+    script(src="/js/main.js")

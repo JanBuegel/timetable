@@ -13,6 +13,25 @@ h1 {
   color: #fff;
 }
 
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-bar input {
+  width: 80%;
+  padding: 10px;
+  font-size: 1.2em;
+  border: 2px solid #0073e6;
+  border-radius: 5px;
+  outline: none;
+}
+
+.search-bar input:focus {
+  border-color: #005bb5;
+}
+
 .day-buttons {
   display: flex;
   justify-content: center;
@@ -47,7 +66,7 @@ h1 {
   background-color: #005bb5;
 }
 
-.filter-button, .search-button, .reset-button {
+.filter-button, .reset-button {
   position: fixed;
   bottom: 20px;
   background-color: #0073e6;
@@ -67,15 +86,11 @@ h1 {
   right: 20px;
 }
 
-.search-button {
+.reset-button {
   left: 20px;
 }
 
-.reset-button {
-  left: 100px;
-}
-
-.filter-button:hover, .search-button:hover, .reset-button:hover {
+.filter-button:hover, .reset-button:hover {
   background-color: #005bb5;
 }
 
@@ -133,6 +148,12 @@ h1 {
   margin: 5px 0;
   font-size: 1em;
   color: #bbb;
+   /* Zentrierung des Textes */
+}
+
+.event .event-info {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Modal Styles */
@@ -217,7 +238,7 @@ h1 {
     padding: 50px;
   }
 
-  .filter-button, .search-button, .reset-button, .day-button {
+  .filter-button, .reset-button, .day-button {
     width: 100px;
     height: 100px;
   }
@@ -227,7 +248,7 @@ h1 {
   }
 
   .reset-button {
-    left: 140px;
+    left: 20px;
   }
 
   h1 {
