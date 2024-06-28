@@ -20,6 +20,6 @@ fi
 docker cp $JSON_FILE $DOCKER_CONTAINER_ID:$CONTAINER_PATH
 
 # JSON-Datei in die MongoDB in Docker importieren
-docker exec -i $DOCKER_CONTAINER_ID mongoimport --db open-flair --collection artists --drop --file $CONTAINER_PATH --jsonArray
+docker exec -i $DOCKER_CONTAINER_ID mongoimport --db open-flair --collection events --drop --file $CONTAINER_PATH --jsonArray
 
 echo "Import completed."
