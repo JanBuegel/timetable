@@ -4,16 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterButton = document.querySelector('.filter-button');
   const resetButton = document.querySelector('.reset-button');
   const favoriteToggleButton = document.querySelector('.favorite-toggle');
-  const modal = document.querySelector('.modal');
-  const closeButton = document.querySelector('.close-button');
+  const filterModal = document.getElementById('filter-modal');
+  const closeButton = document.querySelector('#filter-modal .close-button');
   const stageList = document.querySelector('.stage-list');
   const dayButtons = document.querySelectorAll('.day-button');
   const searchInput = document.querySelector('#searchInput');
   const favoriteButtons = document.querySelectorAll('.favorite-button');
+  const welcomeModal = document.getElementById('welcome-modal');
 
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
   let showFavorites = false;
-  let filtersActive = false; // Track filter status
+  let filtersActive = false;
 
   function updateResetButton() {
     if (filtersActive || searchInput.value) {
@@ -24,21 +25,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (!localStorage.getItem('welcomeModalSeen')) {
-    document.getElementById('welcome-modal').style.display = 'flex';
+    welcomeModal.style.display = 'flex';
   }
 
   window.closeWelcomeModal = function() {
-    document.getElementById('welcome-modal').style.display = 'none'
+    welcomeModal.style.display = 'none';
     localStorage.setItem('welcomeModalSeen', 'true');
   };
-  
+
+  document.querySelector('#welcome-modal button').addEventListener('click', closeWelcomeModal);
+
   filterButton.addEventListener('click', () => {
     fetch('/stages')
       .then(response => response.json())
       .then(stages => {
         stageList.innerHTML = '';
 
-        // Add "alle Bühnen" option
         const allStagesLi = document.createElement('li');
         allStagesLi.className = 'stage-item';
         allStagesLi.textContent = 'Alle Bühnen';
@@ -69,16 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (event) => {
     if (event.target === filterModal) {
       filterModal.style.display = 'none';
-    }
-  });
-  
-  closeButton.addEventListener('click', () => {
-    modal.classList.add('hidden');
-  });
-
-  window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-      modal.classList.add('hidden');
     }
   });
 

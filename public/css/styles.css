@@ -1,4 +1,4 @@
-html body {
+html, body {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -10,14 +10,10 @@ html body {
   padding-right: env(safe-area-inset-right);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
-  width: 100%;
-  overflow-x: hidden; /* Verhindert horizontales Scrollen */
 }
 
 body {
   font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
   background-color: #1a1a1a;
   color: #fff;
   box-sizing: border-box;
@@ -28,7 +24,6 @@ h1 {
   margin: 20px 0;
   font-size: 2.5em;
   color: #fff;
-  padding-top: env(safe-area-inset-top); /* Ensure the header respects the safe area */
 }
 
 .search-bar {
@@ -41,13 +36,13 @@ h1 {
   width: 80%;
   padding: 10px;
   font-size: 16px;
-  border: 2px solid #e60000; /* Rotton des Logos */
+  border: 2px solid #e60000;
   border-radius: 5px;
   outline: none;
 }
 
 .search-bar input:focus {
-  border-color: #cc0000; /* Etwas dunklerer Rotton */
+  border-color: #cc0000;
 }
 
 .day-buttons {
@@ -59,14 +54,13 @@ h1 {
 }
 
 .day-button {
-  background-color: #e60000; /* Rotton des Logos */
+  background-color: #e60000;
   color: #fff;
   border: none;
   border-radius: 50%;
   width: 60px;
   height: 60px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -82,11 +76,11 @@ h1 {
 }
 
 .day-button:hover {
-  background-color: #cc0000; /* Etwas dunklerer Rotton */
+  background-color: #cc0000;
 }
 
 .filter-button, .reset-button, .favorite-toggle {
-  background-color: #e60000; /* Rotton des Logos */
+  background-color: #e60000;
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -107,15 +101,15 @@ h1 {
 }
 
 .reset-button {
-  right: 180px; /* Abstand zum Filter-Button */
+  right: 180px;
 }
 
 .favorite-toggle {
-  right: 70px; /* Abstand zum Reset-Button */
+  right: 70px;
 }
 
 .filter-button:hover, .reset-button:hover, .favorite-toggle:hover {
-  background-color: #cc0000; /* Etwas dunklerer Rotton */
+  background-color: #cc0000;
 }
 
 .modal.hidden {
@@ -201,7 +195,7 @@ h1 {
   background-color: #444;
   font-size: 1.5em;
   border-bottom: 1px solid #555;
-  text-align: left; /* linksbündig */
+  text-align: left;
 }
 
 .event {
@@ -227,16 +221,17 @@ h1 {
 .event h2 {
   margin: 0;
   font-size: 1.2em;
-  color: #e60000; /* Rotton des Logos */
-  text-align: left; /* linksbündig */
+  color: #e60000;
+  text-align: left;
 }
 
 .event p {
   margin: 5px 0;
   font-size: 1em;
   color: #bbb;
-  text-align: left; /* linksbündig */
+  text-align: left;
 }
+
 .favorite-button {
   position: absolute;
   right: 0;
@@ -253,7 +248,7 @@ h1 {
 }
 
 .stage-item {
-  background-color: #e60000; /* Rotton des Logos */
+  background-color: #e60000;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -264,7 +259,7 @@ h1 {
 }
 
 .stage-item:hover {
-  background-color: #cc0000; /* Etwas dunklerer Rotton */
+  background-color: #cc0000;
 }
 
 .modal-content ul {
@@ -273,7 +268,7 @@ h1 {
 }
 
 .modal-content li.stage-item {
-  background-color: #e60000; /* Rotton des Logos */
+  background-color: #e60000;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -284,14 +279,13 @@ h1 {
 }
 
 .modal-content li.stage-item:hover {
-  background-color: #cc0000; /* Etwas dunklerer Rotton */
+  background-color: #cc0000;
 }
-
 
 @supports(padding:max(0px)) {
   body, header, footer {
-      padding-left: min(0vmin, env(safe-area-inset-left));
-      padding-right: min(0vmin, env(safe-area-inset-right));
+    padding-left: min(0vmin, env(safe-area-inset-left));
+    padding-right: min(0vmin, env(safe-area-inset-right));
   }
 }
 
@@ -307,7 +301,6 @@ h1 {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
-  
 }
 
 #welcome-modal .modal-content {
@@ -340,7 +333,6 @@ h1 {
   display: none;
 }
 
-
 /* Mobile view */
 @media (max-width: 1200px) {
   .event {
@@ -367,10 +359,6 @@ h1 {
     height: 40px;
   }
 
-  .reset-button {
-    left: 40px;
-  }
-
   h1 {
     font-size: 4em;
   }
@@ -380,14 +368,13 @@ h1 {
   }
 
   .favorite-button {
-    right: 1;
+    right: 0;
     scale: 150%;
     padding-bottom: 15px;
-
   }
 
   .day-button {
-    background-color: #e60000; /* Rotton des Logos */
+    background-color: #e60000;
     color: #fff;
     border: none;
     border-radius: 50%;
