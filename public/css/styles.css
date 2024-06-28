@@ -252,50 +252,6 @@ h1 {
   background-color: #005bb5;
 }
 
-/* Mobile view */
-@media (max-width: 1200px) {
-  .event {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 40px;
-    font-size: 2.5em;
-  }
-
-  .event h2 {
-    font-size: 3em;
-  }
-
-  .event p {
-    font-size: 2.5em;
-  }
-
-  .modal-content {
-    width: 90%;
-    padding: 50px;
-  }
-
-  .filter-button, .reset-button, .day-button {
-    width: 100px;
-    height: 100px;
-  }
-
-  .material-symbols-outlined {
-    font-size: 50px;
-  }
-
-  .reset-button {
-    left: 140px;
-  }
-
-  h1 {
-    font-size: 4em;
-  }
-
-  .event-group-header {
-    font-size: 3em;
-  }
-}
-
 .modal-content ul {
   list-style-type: none;
   padding: 0;
@@ -315,4 +271,67 @@ h1 {
 .modal-content li.stage-item:hover {
   background-color: #005bb5;
 }
+/* Other existing styles... */
 
+/* Mobile view */
+@media (max-width: 1200px) {
+  .event {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px;
+    font-size: 2.5em;
+  }
+
+  .event h2 {
+    font-size: 1.8em;
+  }
+
+  .event p {
+    font-size: 1.8em;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 50px;
+  }
+
+  .material-symbols-outlined {
+    font-size: 50px;
+  }
+
+  .reset-button {
+    left: 140px;
+    width: 120px;
+    height: 120px;
+  }
+
+  .favorite-toggle {
+    font-size: 2em;
+    width: 120px;
+    height: 120px;
+  }
+
+  .filter-button {
+    width: 120px;
+    height: 120px;
+  }
+
+  .favorite-button {
+    font-size: 40px;
+  }
+
+  .day-button {
+    width: 120px;
+    height: 120px;
+  }
+
+  h1 {
+    font-size: 4em;
+  }
+
+  .event-group-header {
+    font-size: 3em;
+  }
+
+
+}
