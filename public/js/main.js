@@ -16,13 +16,22 @@ document.addEventListener('DOMContentLoaded', () => {
   let filtersActive = false; // Track filter status
 
   function updateResetButton() {
-    if (filtersActive || searchInput.value || showFavorites) {
+    if (filtersActive || searchInput.value) {
       resetButton.classList.remove('hidden');
     } else {
       resetButton.classList.add('hidden');
     }
   }
 
+  if (!localStorage.getItem('welcomeModalSeen')) {
+    document.getElementById('welcome-modal').style.display = 'flex';
+  }
+
+  window.closeWelcomeModal = function() {
+    document.getElementById('welcome-modal').style.display = 'none'
+    localStorage.setItem('welcomeModalSeen', 'true');
+  };
+  
   filterButton.addEventListener('click', () => {
     fetch('/stages')
       .then(response => response.json())
@@ -31,32 +40,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add "alle Bühnen" option
         const allStagesLi = document.createElement('li');
+        allStagesLi.className = 'stage-item';
         allStagesLi.textContent = 'Alle Bühnen';
-        allStagesLi.classList.add('stage-item');
         allStagesLi.addEventListener('click', () => {
           filterByStage('');
-          modal.classList.add('hidden');
-          filtersActive = false;
-          updateResetButton();
+          filterModal.style.display = 'none';
         });
         stageList.appendChild(allStagesLi);
 
         stages.forEach(stage => {
           const li = document.createElement('li');
+          li.className = 'stage-item';
           li.textContent = stage;
-          li.classList.add('stage-item');
           li.addEventListener('click', () => {
             filterByStage(stage);
-            modal.classList.add('hidden');
-            filtersActive = true;
-            updateResetButton();
+            filterModal.style.display = 'none';
           });
           stageList.appendChild(li);
         });
-        modal.classList.remove('hidden');
+        filterModal.style.display = 'flex';
       });
   });
 
+  closeButton.addEventListener('click', () => {
+    filterModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === filterModal) {
+      filterModal.style.display = 'none';
+    }
+  });
+  
   closeButton.addEventListener('click', () => {
     modal.classList.add('hidden');
   });
