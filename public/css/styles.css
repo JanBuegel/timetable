@@ -1,9 +1,24 @@
+html body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+}
+
 body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #1a1a1a;
   color: #fff;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -11,6 +26,7 @@ h1 {
   margin: 20px 0;
   font-size: 2.5em;
   color: #fff;
+  padding-top: env(safe-area-inset-top); /* Ensure the header respects the safe area */
 }
 
 .search-bar {
@@ -22,14 +38,14 @@ h1 {
 .search-bar input {
   width: 80%;
   padding: 10px;
-  font-size: 1.2em;
-  border: 2px solid #0073e6;
+  font-size: 16px;
+  border: 2px solid #e60000; /* Rotton des Logos */
   border-radius: 5px;
   outline: none;
 }
 
 .search-bar input:focus {
-  border-color: #005bb5;
+  border-color: #cc0000; /* Etwas dunklerer Rotton */
 }
 
 .day-buttons {
@@ -37,10 +53,11 @@ h1 {
   justify-content: center;
   gap: 10px;
   margin: 20px 0;
+  font-weight: bold;
 }
 
 .day-button {
-  background-color: #0073e6;
+  background-color: #e60000; /* Rotton des Logos */
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -63,11 +80,11 @@ h1 {
 }
 
 .day-button:hover {
-  background-color: #005bb5;
+  background-color: #cc0000; /* Etwas dunklerer Rotton */
 }
 
-.filter-button {
-  background-color: #0073e6;
+.filter-button, .reset-button, .favorite-toggle {
+  background-color: #e60000; /* Rotton des Logos */
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -81,11 +98,22 @@ h1 {
   transition: background-color 0.3s;
   position: fixed;
   bottom: 20px;
+}
+
+.filter-button {
   right: 20px;
 }
 
-.filter-button:hover {
-  background-color: #005bb5;
+.reset-button {
+  right: 110px; /* Abstand zum Filter-Button */
+}
+
+.favorite-toggle {
+  right: 180px; /* Abstand zum Reset-Button */
+}
+
+.filter-button:hover, .reset-button:hover, .favorite-toggle:hover {
+  background-color: #cc0000; /* Etwas dunklerer Rotton */
 }
 
 .modal.hidden {
@@ -138,29 +166,12 @@ h1 {
   left: 20px;
   display: flex;
   gap: 20px;
-}
-
-.favorite-toggle, .reset-button {
-  background-color: #0073e6;
-  color: #fff;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.favorite-toggle:hover, .reset-button:hover {
-  background-color: #005bb5;
+  bottom: env(safe-area-inset-bottom);
 }
 
 .favorite-toggle.active {
   background-color: #fff;
-  color: #0073e6;
+  color: #e60000;
 }
 
 .material-symbols-outlined {
@@ -188,7 +199,7 @@ h1 {
   background-color: #444;
   font-size: 1.5em;
   border-bottom: 1px solid #555;
-  text-align: left; /* left-aligned */
+  text-align: left; /* linksbündig */
 }
 
 .event {
@@ -213,15 +224,15 @@ h1 {
 .event h2 {
   margin: 0;
   font-size: 1.2em;
-  color: #0073e6;
-  text-align: left; /* left-aligned */
+  color: #e60000; /* Rotton des Logos */
+  text-align: left; /* linksbündig */
 }
 
 .event p {
   margin: 5px 0;
   font-size: 1em;
   color: #bbb;
-  text-align: left; /* left-aligned */
+  text-align: left; /* linksbündig */
 }
 
 .favorite-button {
@@ -230,7 +241,7 @@ h1 {
   border: none;
   cursor: pointer;
   color: #bbb;
-  align-self: flex-start; /* right-aligned */
+  align-self: flex-end; /* rechtsbündig */
 }
 
 .favorite-button.active {
@@ -238,7 +249,7 @@ h1 {
 }
 
 .stage-item {
-  background-color: #0073e6;
+  background-color: #e60000; /* Rotton des Logos */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -249,7 +260,7 @@ h1 {
 }
 
 .stage-item:hover {
-  background-color: #005bb5;
+  background-color: #cc0000; /* Etwas dunklerer Rotton */
 }
 
 .modal-content ul {
@@ -258,7 +269,7 @@ h1 {
 }
 
 .modal-content li.stage-item {
-  background-color: #0073e6;
+  background-color: #e60000; /* Rotton des Logos */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -269,9 +280,8 @@ h1 {
 }
 
 .modal-content li.stage-item:hover {
-  background-color: #005bb5;
+  background-color: #cc0000; /* Etwas dunklerer Rotton */
 }
-/* Other existing styles... */
 
 /* Mobile view */
 @media (max-width: 1200px) {
@@ -279,15 +289,14 @@ h1 {
     flex-direction: column;
     align-items: flex-start;
     padding: 40px;
-    font-size: 2.5em;
   }
 
   .event h2 {
-    font-size: 1.8em;
+    font-size: 1.5em;
   }
 
   .event p {
-    font-size: 1.8em;
+    font-size: 1.2em;
   }
 
   .modal-content {
@@ -295,34 +304,13 @@ h1 {
     padding: 50px;
   }
 
-  .material-symbols-outlined {
-    font-size: 50px;
+  .filter-button, .reset-button, .favorite-toggle {
+    width: 80px;
+    height: 80px;
   }
 
   .reset-button {
-    left: 140px;
-    width: 120px;
-    height: 120px;
-  }
-
-  .favorite-toggle {
-    font-size: 2em;
-    width: 120px;
-    height: 120px;
-  }
-
-  .filter-button {
-    width: 120px;
-    height: 120px;
-  }
-
-  .favorite-button {
-    font-size: 40px;
-  }
-
-  .day-button {
-    width: 120px;
-    height: 120px;
+    left: 40px;
   }
 
   h1 {
@@ -333,5 +321,16 @@ h1 {
     font-size: 3em;
   }
 
+  .favorite-button {
+    scale: 150%;
+    padding-left: 30px;
+    padding-bottom: 15px;
+  }
+}
 
+@supports(padding:max(0px)) {
+  body, header, footer {
+      padding-left: min(0vmin, env(safe-area-inset-left));
+      padding-right: min(0vmin, env(safe-area-inset-right));
+  }
 }

@@ -10,9 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const dayButtons = document.querySelectorAll('.day-button');
   const searchInput = document.querySelector('#searchInput');
   const favoriteButtons = document.querySelectorAll('.favorite-button');
-  
+
   let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
   let showFavorites = false;
+  let filtersActive = false; // Track filter status
+
+  function updateResetButton() {
+    if (filtersActive || searchInput.value || showFavorites) {
+      resetButton.classList.remove('hidden');
+    } else {
+      resetButton.classList.add('hidden');
+    }
+  }
 
   filterButton.addEventListener('click', () => {
     fetch('/stages')
@@ -27,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
         allStagesLi.addEventListener('click', () => {
           filterByStage('');
           modal.classList.add('hidden');
-          checkResetButton();
+          filtersActive = false;
+          updateResetButton();
         });
         stageList.appendChild(allStagesLi);
 
@@ -38,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
           li.addEventListener('click', () => {
             filterByStage(stage);
             modal.classList.add('hidden');
-            checkResetButton();
+            filtersActive = true;
+            updateResetButton();
           });
           stageList.appendChild(li);
         });
@@ -60,16 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchTerm = searchInput.value.toLowerCase();
     if (searchTerm) {
       searchEvents(searchTerm);
-      resetButton.classList.remove('hidden');
+      filtersActive = true;
     } else {
       resetSearch();
-      resetButton.classList.add('hidden');
+      filtersActive = false;
     }
+    updateResetButton();
   });
 
   resetButton.addEventListener('click', () => {
     resetSearch();
-    resetButton.classList.add('hidden');
+    filtersActive = false;
+    updateResetButton();
     searchInput.value = '';
   });
 
@@ -82,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
       resetSearch();
       favoriteToggleButton.classList.remove('active');
     }
+    updateResetButton();
   });
 
   favoriteButtons.forEach(button => {
@@ -95,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', () => {
       const day = button.getAttribute('data-day');
       filterByDay(day);
-      resetButton.classList.remove('hidden');
+      filtersActive = true;
+      updateResetButton();
     });
   });
 
@@ -111,7 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
         event.style.display = 'none';
       }
     });
-    if (found) resetButton.classList.remove('hidden');
+    filtersActive = found;
+    updateResetButton();
   }
 
   function searchEvents(term) {
@@ -126,7 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
         event.style.display = 'none';
       }
     });
-    if (found) resetButton.classList.remove('hidden');
+    filtersActive = found;
+    updateResetButton();
   }
 
   function filterByDay(day) {
@@ -139,6 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         group.style.display = 'none';
       }
     });
+    filtersActive = true;
+    updateResetButton();
   }
 
   function resetSearch() {
@@ -150,6 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
     eventGroups.forEach(group => {
       group.style.display = 'block';
     });
+    filtersActive = false;
+    updateResetButton();
   }
 
   function toggleFavorite(eventId, button) {
@@ -177,16 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function checkResetButton() {
-    const events = document.querySelectorAll('.event');
-    const isFiltered = Array.from(events).some(event => event.style.display === 'none');
-    if (isFiltered) {
-      resetButton.classList.remove('hidden');
-    } else {
-      resetButton.classList.add('hidden');
-    }
-  }
-
   function initializeFavorites() {
     favorites.forEach(eventId => {
       const event = document.querySelector(`.event[data-id="${eventId}"]`);
@@ -198,4 +209,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initializeFavorites();
+  updateResetButton();
 });
