@@ -222,6 +222,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').then(registration => {
+        console.log('Service Worker registriert mit Scope:', registration.scope);
+  
+        registration.onupdatefound = () => {
+          const installingWorker = registration.installing;
+          installingWorker.onstatechange = () => {
+            if (installingWorker.state === 'installed') {
+              if (navigator.serviceWorker.controller) {
+                // Neue oder aktualisierte Inhalte sind verfügbar
+                showUpdateMessage();
+              } else {
+                // Inhalte wurden gecached, es kann offline gearbeitet werden
+                console.log('Inhalte wurden gecached für die Offline-Nutzung.');
+              }
+            }
+          };
+        };
+      }).catch(error => {
+        console.error('Service Worker Registrierung fehlgeschlagen:', error);
+      });
+    });
+  }
+  
+  function showUpdateMessage() {
+    const updateMessage = document.createElement('div');
+    updateMessage.className = 'update-message';
+    updateMessage.innerHTML = `
+      <p>Eine neue Version der App ist verfügbar. Bitte schließen Sie die App vollständig und öffnen Sie sie erneut, um die neueste Version zu verwenden.</p>
+    `;
+    document.body.appendChild(updateMessage);
+  }  
+
   initializeFavorites();
   updateResetButton();
 });
