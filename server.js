@@ -61,6 +61,36 @@ app.get('/timetable', (req, res) => {
   });
 });
 
+  // Route für die Admin-Seite
+  app.get('/admin', (req, res) => {
+    Event.find().then(events => {
+      res.render('admin', { events });
+    });
+  });
+
+  // CRUD Routes
+  app.post('/admin/events', (req, res) => {
+    const event = new Event(req.body);
+    event.save().then(() => res.redirect('/admin'));
+  });
+
+  app.put('/admin/events/:id', (req, res) => {
+    Event.findByIdAndUpdate(req.params.id, req.body).then(() => res.redirect('/admin'));
+  });
+
+  app.delete('/admin/events/:id', (req, res) => {
+    Event.findByIdAndDelete(req.params.id).then(() => res.redirect('/admin'));
+  });
+
+  // Routes
+  app.get('/', (req, res) => {
+    Event.find().then(events => {
+      const eventsGroupedByDate = groupEventsByDate(events);
+      res.render('timetable', { eventsGroupedByDate });
+    });
+  });
+
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

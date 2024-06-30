@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title Admin - Open Flair 2024 Timetable
+    link(rel='stylesheet', href='/css/admin.css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/sortable/1.13.0/Sortable.min.js')
+  body
+    h1 Admin - Open Flair 2024 Timetable
+    table
+      thead
+        tr
+          th(data-sort="name") Name
+          th(data-sort="date") Datum
+          th(data-sort="time") Zeit
+          th(data-sort="stage") Bühne
+          th Aktionen
+      tbody
+        each event in events
+          tr
+            td= event.name
+            td= event.date
+            td= event.time
+            td= event.stage
+            td
+              button.edit-button(data-id=event._id) Bearbeiten
+              button.delete-button(data-id=event._id) Löschen
+    h2 Neues Event hinzufügen
+    form(action="/admin/events" method="POST")
+      input(type="text" name="name" placeholder="Name")
+      input(type="date" name="date" placeholder="Datum")
+      input(type="time" name="time" placeholder="Zeit")
+      input(type="text" name="stage" placeholder="Bühne")
+      button(type="submit") Hinzufügen
+
+    // Modal for editing events
+    #edit-modal.hidden
+      .modal-content
+        h2 Event bearbeiten
+        form#edit-form(action="" method="POST")
+          input(type="text" name="name" placeholder="Name")
+          input(type="date" name="date" placeholder="Datum")
+          input(type="time" name="time" placeholder="Zeit")
+          input(type="text" name="stage" placeholder="Bühne")
+          button(type="submit") Speichern
+        button.close-button Schließen
+    script(src='/js/admin.js')
