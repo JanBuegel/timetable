@@ -125,17 +125,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const events = document.querySelectorAll('.event');
     let found = false;
     events.forEach(event => {
-      const eventStage = event.querySelector('.event-info p:nth-child(3)').textContent.trim();
-      if (!stage || stage.toLowerCase() === 'alle bühnen' || eventStage.toLowerCase() === stage.toLowerCase()) {
-        event.style.display = 'flex';
-        found = true;
-      } else {
-        event.style.display = 'none';
-      }
+        const eventStageElement = event.querySelector('.event-info .grid-item:nth-child(3)');
+        if (eventStageElement) {
+            const eventStage = eventStageElement.textContent.trim();
+            if (!stage || stage.toLowerCase() === 'alle bühnen' || eventStage.toLowerCase() === stage.toLowerCase()) {
+                event.style.display = 'flex';
+                found = true;
+            } else {
+                event.style.display = 'none';
+            }
+        } else {
+            console.error('Stage element not found in event:', event);
+        }
     });
     filtersActive = found;
     updateResetButton();
-  }
+}
+
+  
 
   function searchEvents(term) {
     const events = document.querySelectorAll('.event');

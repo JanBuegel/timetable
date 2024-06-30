@@ -63,8 +63,7 @@ html
         span.close-button &times;
         h2 Bühne auswählen
         ul.stage-list
+          // Dynamische Bühnen
           li.stage-item(onclick="filterByStage('alle bühnen')") Alle Bühnen
-          each stage in ["Seebühne", "E-Werk", "Hofbühne", "Kleinkunstzelt", "RadioBob! Bühne", "Freibühne"]
-            li.stage-item(onclick=`filterByStage("${stage}")`)= stage
 
     script(src="/js/main.js")
