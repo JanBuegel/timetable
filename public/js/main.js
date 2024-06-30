@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  if (!localStorage.getItem('welcomeModalSeen')) {
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+  if (!localStorage.getItem('welcomeModalSeen' && !isPWA)) {
     welcomeModal.style.display = 'flex';
   }
 
@@ -224,28 +226,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js').then(registration => {
-        console.log('Service Worker registriert mit Scope:', registration.scope);
-  
-        registration.onupdatefound = () => {
-          const installingWorker = registration.installing;
-          installingWorker.onstatechange = () => {
-            if (installingWorker.state === 'installed') {
-              if (navigator.serviceWorker.controller) {
-                // Neue oder aktualisierte Inhalte sind verfügbar
-                showUpdateMessage();
-              } else {
-                // Inhalte wurden gecached, es kann offline gearbeitet werden
-                console.log('Inhalte wurden gecached für die Offline-Nutzung.');
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+          registration.onupdatefound = () => {
+            const installingWorker = registration.installing;
+            installingWorker.onstatechange = () => {
+              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                const updateAlert = document.createElement('div');
+                updateAlert.className = 'update-alert';
+                updateAlert.innerHTML = `
+                  <p>Eine neue Version der App ist verfügbar. Bitte schließen Sie die App vollständig und öffnen Sie sie erneut, um die neueste Version zu verwenden.</p>
+                `;
+                document.body.appendChild(updateAlert);
               }
-            }
+            };
           };
-        };
-      }).catch(error => {
-        console.error('Service Worker Registrierung fehlgeschlagen:', error);
-      });
+        }).catch(err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
     });
   }
+  
   
   function showUpdateMessage() {
     const updateMessage = document.createElement('div');
