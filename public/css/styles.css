@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'VincaStencil';
+  src: url('/fonts/vinca_stencil.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html, body {
   width: 100%;
   height: 100%;
@@ -24,8 +31,8 @@ h1 {
   margin: 20px 0;
   font-size: 2.5em;
   color: #fff;
+  font-family: 'VincaStencil', Arial, sans-serif;
 }
-
 .search-bar {
   display: flex;
   justify-content: center;
@@ -45,12 +52,48 @@ h1 {
   border-color: #cc0000;
 }
 
-.day-buttons {
+.bottom-buttons {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   display: flex;
+  gap: 20px;
+  align-items: flex-end; /* Buttons am unteren Rand ausrichten */
+  flex-direction: column; /* In eine Spalte anordnen */
+}
+
+.filter-button, .reset-button, .favorite-toggle {
+  background-color: #e60000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.filter-button:hover, .reset-button:hover, .favorite-toggle:hover {
+  background-color: #cc0000;
+}
+
+.favorite-toggle.active {
+  background-color: #fff;
+  color: #e60000;
+}
+
+.day-buttons-container {
+  display: flex;
+  flex-direction: row;
   gap: 10px;
-  margin: 20px 0;
-  font-weight: bold;
+  position: fixed;
+  bottom: 20px;
+  left: 30px; /* Abstand vom linken Rand */
+  z-index: 10; /* Damit die Buttons immer sichtbar sind */
 }
 
 .day-button {
@@ -70,8 +113,11 @@ h1 {
   text-align: center;
 }
 
-.day-button p {
-  margin: 0;
+.day-button .material-cions {
+  font-size: 24px
+}
+
+.day-button span {
   font-size: 0.6em;
 }
 
@@ -79,37 +125,8 @@ h1 {
   background-color: #cc0000;
 }
 
-.filter-button, .reset-button, .favorite-toggle {
-  background-color: #e60000;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-  transition: background-color 0.3s;
-  position: fixed;
-  bottom: 20px;
-}
-
-.filter-button {
-  right: 20px;
-}
-
-.reset-button {
-  right: 180px;
-}
-
-.favorite-toggle {
-  right: 70px;
-}
-
-.filter-button:hover, .reset-button:hover, .favorite-toggle:hover {
-  background-color: #cc0000;
+.material-symbols-outlined {
+  font-size: 36px;
 }
 
 .modal.hidden {
@@ -156,20 +173,6 @@ h1 {
   display: none;
 }
 
-.bottom-buttons {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  display: flex;
-  gap: 20px;
-  bottom: env(safe-area-inset-bottom);
-}
-
-.favorite-toggle.active {
-  background-color: #fff;
-  color: #e60000;
-}
-
 .material-symbols-outlined {
   font-size: 36px;
 }
@@ -213,31 +216,37 @@ h1 {
 .event-info {
   flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  justify-content: space-between; /* Platzierung des Favoritenknopfes rechts */
+  align-items: left;
   position: relative;
+}
+
+.event-info.grid-container {
+  display: grid;
+  align-items: center;
+  gap: 10px;
+}
+
+.grid-item {
+  text-align: left; /* Links ausgerichtet */
+  padding-bottom: 10%;
 }
 
 .event h2 {
   margin: 0;
   font-size: 1.2em;
-  color: #e60000;
-  text-align: left;
+  color: #e60000; /* Rotton des Logos */
+  text-align: left; /* linksbündig */
+  flex-grow: 1; /* sorgt dafür, dass der Bandname den verfügbaren Platz einnimmt */
 }
 
 .event p {
   margin: 5px 0;
   font-size: 1em;
   color: #bbb;
-  text-align: left;
 }
 
-.favorite-button {
-  position: absolute;
-  right: 0;
-  top: 0;
-  margin-left: 10px;
-  background: none;
+.favorite-button { background: none;
   border: none;
   cursor: pointer;
   color: #bbb;
@@ -368,26 +377,12 @@ h1 {
   }
 
   .favorite-button {
-    right: 0;
     scale: 150%;
-    padding-bottom: 15px;
   }
 
   .day-button {
-    background-color: #e60000;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 0.8em;
-    text-align: center;
+    width: 40px;
+    height: 40px;
   }
+  
 }
