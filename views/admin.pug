@@ -1,45 +1,59 @@
 doctype html
 html
   head
+    meta(name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover")
     title Admin - Open Flair 2024 Timetable
+    link(rel='stylesheet', href='/css/styles.css')
     link(rel='stylesheet', href='/css/admin.css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/sortable/1.13.0/Sortable.min.js')
   body
     h1 Admin - Open Flair 2024 Timetable
-    table
-      thead
-        tr
-          th(data-sort="name") Name
-          th(data-sort="date") Datum
-          th(data-sort="time") Zeit
-          th(data-sort="stage") Bühne
-          th Aktionen
-      tbody
-        each event in events
+    .container
+      table
+        thead
           tr
-            td= event.name
-            td= event.date
-            td= event.time
-            td= event.stage
-            td
-              button.edit-button(data-id=event._id) Bearbeiten
-              button.delete-button(data-id=event._id) Löschen
-    h2 Neues Event hinzufügen
-    form(action="/admin/events" method="POST")
-      input(type="text" name="name" placeholder="Name")
-      input(type="date" name="date" placeholder="Datum")
-      input(type="time" name="time" placeholder="Zeit")
-      input(type="text" name="stage" placeholder="Bühne")
-      button(type="submit") Hinzufügen
+            th(data-sort="name") Name
+            th(data-sort="date") Datum
+            th(data-sort="time") Zeit
+            th(data-sort="stage") Bühne
+            th Aktionen
+        tbody
+          each event in events
+            tr
+              td= event.name
+              td= event.date
+              td= event.time
+              td= event.stage
+              td
+                button.edit-button(data-id=event._id) Bearbeiten
+                button.delete-button(data-id=event._id) Löschen
+      h2 Neues Event hinzufügen
+      form(action="/admin/events" method="POST")
+        input(type="text" name="name" placeholder="Name")
+        select(name="date")
+          option(value="Mittwoch") Mittwoch
+          option(value="Donnerstag") Donnerstag
+          option(value="Freitag") Freitag
+          option(value="Samstag") Samstag
+          option(value="Sonntag") Sonntag
+        input(type="time" name="time" placeholder="Zeit")
+        input(type="text" name="stage" placeholder="Bühne")
+        button(type="submit") Hinzufügen
 
     // Modal for editing events
-    #edit-modal.hidden
+    #edit-modal.modal.hidden
       .modal-content
+        span.close-button &times;
         h2 Event bearbeiten
         form#edit-form(action="" method="POST")
           input(type="text" name="name" placeholder="Name")
-          input(type="date" name="date" placeholder="Datum")
+          select(name="date")
+            option(value="Mittwoch") Mittwoch
+            option(value="Donnerstag") Donnerstag
+            option(value="Freitag") Freitag
+            option(value="Samstag") Samstag
+            option(value="Sonntag") Sonntag
           input(type="time" name="time" placeholder="Zeit")
           input(type="text" name="stage" placeholder="Bühne")
           button(type="submit") Speichern

@@ -61,26 +61,36 @@ app.get('/timetable', (req, res) => {
   });
 });
 
-  // Route für die Admin-Seite
-  app.get('/admin', (req, res) => {
-    Event.find().then(events => {
-      res.render('admin', { events });
-    });
+// Route für die Admin-Seite
+app.get('/admin', (req, res) => {
+  Event.find().then(events => {
+    res.render('admin', { events });
   });
+});
 
-  // CRUD Routes
-  app.post('/admin/events', (req, res) => {
-    const event = new Event(req.body);
-    event.save().then(() => res.redirect('/admin'));
+// Route für ein einzelnes Event
+app.get('/admin/events/:id', (req, res) => {
+  Event.findById(req.params.id).then(event => {
+    res.json(event);
+  }).catch(err => {
+    res.status(404).send('Event not found');
   });
+});
 
-  app.put('/admin/events/:id', (req, res) => {
-    Event.findByIdAndUpdate(req.params.id, req.body).then(() => res.redirect('/admin'));
-  });
+// CRUD Routes
+app.post('/admin/events', (req, res) => {
+  const event = new Event(req.body);
+  event.save().then(() => res.redirect('/admin'));
+});
 
-  app.delete('/admin/events/:id', (req, res) => {
-    Event.findByIdAndDelete(req.params.id).then(() => res.redirect('/admin'));
-  });
+app.put('/admin/events/:id', (req, res) => {
+  Event.findByIdAndUpdate(req.params.id, req.body).then(() => res.redirect('/admin'));
+});
+
+app.delete('/admin/events/:id', (req, res) => {
+  Event.findByIdAndDelete(req.params.id).then(() => res.redirect('/admin'));
+});
+
 
   // Routes
   app.get('/', (req, res) => {
