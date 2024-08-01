@@ -226,26 +226,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(registration => {
-          registration.onupdatefound = () => {
-            const installingWorker = registration.installing;
-            installingWorker.onstatechange = () => {
-              if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                const updateAlert = document.createElement('div');
-                updateAlert.className = 'update-alert';
-                updateAlert.innerHTML = `
-                  <p>Eine neue Version der App ist verfügbar. Bitte schließen Sie die App vollständig und öffnen Sie sie erneut, um die neueste Version zu verwenden.</p>
-                `;
-                document.body.appendChild(updateAlert);
-              }
-            };
-          };
-        }).catch(err => {
-          console.log('ServiceWorker registration failed: ', err);
+      navigator.serviceWorker.register('/js/service-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        }, (error) => {
+          console.log('Service Worker registration failed:', error);
         });
     });
-  }
+  }  
   
   
   function showUpdateMessage() {

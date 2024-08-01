@@ -1,69 +1,51 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const editButtons = document.querySelectorAll('.edit-button');
-  const deleteButtons = document.querySelectorAll('.delete-button');
-  const editModal = document.getElementById('edit-modal');
-  const closeButton = document.querySelector('#edit-modal .close-button');
-  const editForm = document.getElementById('edit-form');
+$(document).ready(function() {
+  // Activate tooltip
+  $('[data-toggle="tooltip"]').tooltip();
 
-  editButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const eventId = button.getAttribute('data-id');
-      axios.get(`/admin/events/${eventId}`).then(response => {
-        const event = response.data;
-        editForm.action = `/admin/events/${eventId}?_method=PUT`;
-        editForm.querySelector('[name="name"]').value = event.name;
-        editForm.querySelector('[name="date"]').value = event.date;
-        editForm.querySelector('[name="time"]').value = event.time;
-        editForm.querySelector('[name="stage"]').value = event.stage;
-        editModal.classList.remove('hidden');
+  // Select/Deselect checkboxes
+  var checkbox = $('table tbody input[type="checkbox"]');
+  $("#selectAll").click(function() {
+    if (this.checked) {
+      checkbox.each(function() {
+        this.checked = true;
       });
-    });
+    } else {
+      checkbox.each(function() {
+        this.checked = false;
+      });
+    }
   });
-
-  deleteButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const eventId = button.getAttribute('data-id');
-      if (confirm('Sind Sie sicher, dass Sie dieses Event löschen möchten?')) {
-        axios.delete(`/admin/events/${eventId}`).then(() => {
-          location.reload();
-        });
-      }
-    });
-  });
-
-  closeButton.addEventListener('click', () => {
-    editModal.classList.add('hidden');
-  });
-
-  window.addEventListener('click', (event) => {
-    if (event.target === editModal) {
-      editModal.classList.add('hidden');
+  checkbox.click(function() {
+    if (!this.checked) {
+      $("#selectAll").prop("checked", false);
     }
   });
 
-  const tableHeaders = document.querySelectorAll('th[data-sort]');
-  tableHeaders.forEach(header => {
-    header.addEventListener('click', () => {
-      const table = header.closest('table');
-      const tbody = table.querySelector('tbody');
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      const index = Array.from(header.parentNode.children).indexOf(header);
-      const order = header.dataset.order = -(header.dataset.order || -1);
+  // Show modal for editing
+  $('.edit-button').on('click', function() {
+    var eventId = $(this).data('id');
+    // Load event data into the modal
+    axios.get(`/admin/events/${eventId}`)
+      .then(function(response) {
+        var event = response.data;
+        $('#editEventForm [name="name"]').val(event.name);
+        $('#editEventForm [name="date"]').val(event.date);
+        $('#editEventForm [name="time"]').val(event.time);
+        $('#editEventForm [name="stage"]').val(event.stage);
 
-      rows.sort((a, b) => {
-        const cellA = a.children[index].textContent.trim();
-        const cellB = b.children[index].textContent.trim();
-
-        if (!isNaN(Date.parse(cellA)) && !isNaN(Date.parse(cellB))) {
-          return order * (new Date(cellA) - new Date(cellB));
-        } else if (!isNaN(cellA) && !isNaN(cellB)) {
-          return order * (cellA - cellB);
-        } else {
-          return order * cellA.localeCompare(cellB);
-        }
+        // Remove display: none to show modal
+        $('#editModal').css('display', 'block');
+        $('#editModal').modal('show'); // Show the modal with Bootstrap's modal method
+      })
+      .catch(function(error) {
+        console.error('Error loading event data:', error);
       });
+      $(this).css('display', 'show');
+  });
 
-      rows.forEach(row => tbody.appendChild(row));
-    });
+  // Hide modal after closing
+  $('#editModal').on('hidden.bs.modal', function () {
+    // Set display: none to hide modal again
+    $(this).css('display', 'none');
   });
 });

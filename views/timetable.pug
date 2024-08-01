@@ -29,12 +29,10 @@ html
     .search-bar
       input#searchInput(type="text", placeholder="Suche nach Künstlern")
     .day-buttons-container
-      if eventsGroupedByDate
-        each day, index in Object.keys(eventsGroupedByDate)
-          button.day-button(data-day=day)
-            span
-              span.material-symbols-outlined calendar_today
-              span= ['Mi', 'Do', 'Fr', 'Sa', 'So'][index]
+          if eventsGroupedByDate
+            each day, index in Object.keys(eventsGroupedByDate)
+              button.day-button(data-day=day)
+                span= ['Mi', 'Do', 'Fr', 'Sa', 'So'][index]
     .container
       if eventsGroupedByDate
         each day in Object.keys(eventsGroupedByDate)

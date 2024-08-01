@@ -5,57 +5,94 @@ html
     title Admin - Open Flair 2024 Timetable
     link(rel='stylesheet', href='/css/styles.css')
     link(rel='stylesheet', href='/css/admin.css')
+    link(rel="stylesheet", href="https://fonts.googleapis.com/icon?family=Material+Icons")
     script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/sortable/1.13.0/Sortable.min.js')
   body
-    h1 Admin - Open Flair 2024 Timetable
     .container
-      table
-        thead
-          tr
-            th(data-sort="name") Name
-            th(data-sort="date") Datum
-            th(data-sort="time") Zeit
-            th(data-sort="stage") Bühne
-            th Aktionen
-        tbody
-          each event in events
+      .table-wrapper
+        .table-title
+          .row
+            .col-sm-6
+              h2 Admin - Open Flair 2024 Timetable
+            .col-sm-6
+              button.btn.btn-success(data-toggle="modal" data-target="#addEventModal")
+                i.material-icons add
+                | Neue Event
+        table.table.table-striped.table-hover
+          thead
             tr
-              td= event.name
-              td= event.date
-              td= event.time
-              td= event.stage
-              td
-                button.edit-button(data-id=event._id) Bearbeiten
-                button.delete-button(data-id=event._id) Löschen
-      h2 Neues Event hinzufügen
-      form(action="/admin/events" method="POST")
-        input(type="text" name="name" placeholder="Name")
-        select(name="date")
-          option(value="Mittwoch") Mittwoch
-          option(value="Donnerstag") Donnerstag
-          option(value="Freitag") Freitag
-          option(value="Samstag") Samstag
-          option(value="Sonntag") Sonntag
-        input(type="time" name="time" placeholder="Zeit")
-        input(type="text" name="stage" placeholder="Bühne")
-        button(type="submit") Hinzufügen
-
+              th(data-sort="name") Name
+              th(data-sort="date") Datum
+              th(data-sort="time") Zeit
+              th(data-sort="stage") Bühne
+              th Aktionen
+          tbody
+            each event in events
+              tr
+                td= event.name
+                td= event.date
+                td= event.time
+                td= event.stage
+                td
+                  button.btn.btn-warning.btn-sm.edit-button(data-id=event._id) Bearbeiten
+                  button.btn.btn-danger.btn-sm.delete-button(data-id=event._id) Löschen
+    // Modal for adding events
+    #addEventModal.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4.modal-title Event hinzufügen
+            button.close(type="button", data-dismiss="modal") &times;
+          .modal-body
+            form#addEventForm(action="/admin/events" method="POST")
+              .form-group
+                label Name
+                input.form-control(type="text" name="name" required)
+              .form-group
+                label Datum
+                select.form-control(name="date" required)
+                  option(value="Mittwoch") Mittwoch
+                  option(value="Donnerstag") Donnerstag
+                  option(value="Freitag") Freitag
+                  option(value="Samstag") Samstag
+                  option(value="Sonntag") Sonntag
+              .form-group
+                label Zeit
+                input.form-control(type="time" name="time" required)
+              .form-group
+                label Bühne
+                input.form-control(type="text" name="stage" required)
+              .modal-footer
+                button.btn.btn-default(type="button", data-dismiss="modal") Schließen
+                button.btn.btn-primary(type="submit") Speichern
     // Modal for editing events
-    #edit-modal.modal.hidden
-      .modal-content
-        span.close-button &times;
-        h2 Event bearbeiten
-        form#edit-form(action="" method="POST")
-          input(type="text" name="name" placeholder="Name")
-          select(name="date")
-            option(value="Mittwoch") Mittwoch
-            option(value="Donnerstag") Donnerstag
-            option(value="Freitag") Freitag
-            option(value="Samstag") Samstag
-            option(value="Sonntag") Sonntag
-          input(type="time" name="time" placeholder="Zeit")
-          input(type="text" name="stage" placeholder="Bühne")
-          button(type="submit") Speichern
-        button.close-button Schließen
+    #editModal.modal
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4.modal-title Event bearbeiten
+            button.close(type="button", data-dismiss="modal") &times;
+          .modal-body
+            form#editEventForm
+              .form-group
+                label Name
+                input.form-control(type="text" name="name" required)
+              .form-group
+                label Datum
+                select.form-control(name="date" required)
+                  option(value="Mittwoch") Mittwoch
+                  option(value="Donnerstag") Donnerstag
+                  option(value="Freitag") Freitag
+                  option(value="Samstag") Samstag
+                  option(value="Sonntag") Sonntag
+              .form-group
+                label Zeit
+                input.form-control(type="time" name="time" required)
+              .form-group
+                label Bühne
+                input.form-control(type="text" name="stage" required)
+              .modal-footer
+                button.btn.btn-default(type="button", data-dismiss="modal") Schließen
+                button.btn.btn-primary(type="submit") Speichern
     script(src='/js/admin.js')
