@@ -1,6 +1,0 @@
-db. find()
-use open-flair
-db.events.deleteMany({})
-use open-flair
-use eventlair
-use event
