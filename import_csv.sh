@@ -14,24 +14,25 @@ if [[ ! -f "$CSV_FILE" ]]; then
   exit 1
 fi
 
-for cmd in csvjson jq docker; do
-  if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "Error: $cmd is required but not installed." >&2
-    exit 1
-  fi
-done
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Error: docker is required but not installed." >&2
+  exit 1
+fi
 
 WORK_DIR="$(mktemp -d)"
 trap 'rm -rf "$WORK_DIR"' EXIT
-JSON_FILE="$WORK_DIR/events.json"
+CSV_TMP="$WORK_DIR/$(basename "$CSV_FILE")"
 
-# Convert CSV (semicolon separated) to JSON and fix time field
-csvjson -d ';' "$CSV_FILE" > "$JSON_FILE"
-jq 'map(.time |= sub("^0:"; ""))' "$JSON_FILE" > "$JSON_FILE.tmp" && mv "$JSON_FILE.tmp" "$JSON_FILE"
+# mongoimport expects comma-separated CSV. Convert if necessary
+sed 's/;/,/g' "$CSV_FILE" > "$CSV_TMP"
 
-# Copy file into container and import
+docker cp "$CSV_TMP" "$CONTAINER:/tmp/events.csv"
+docker exec "$CONTAINER" mongoimport \
+  --db open-flair \
+  --collection events \
+  --drop \
+  --type csv \
+  --file /tmp/events.csv \
+  --headerline
 
-docker cp "$JSON_FILE" "$CONTAINER:/tmp/events.json"
-docker exec "$CONTAINER" mongoimport --db open-flair --collection events --drop --file /tmp/events.json --jsonArray
-
-echo "Import completed successfully."
+echo "CSV import completed."
