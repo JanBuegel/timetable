@@ -1,37 +1,37 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Überprüfen, ob die Container-ID und der CSV-Dateiname als Argumente übergeben wurden
-if [ -z "$1" ] || [ -z "$2" ]; then
-  echo "Usage: $0 <docker-container-id> <csv-file>"
+if [[ $# -lt 1 || $# -gt 2 ]]; then
+  echo "Usage: $0 <csv-file> [mongo-container]" >&2
   exit 1
 fi
 
-DOCKER_CONTAINER_ID=$1
-CSV_FILE=$2
-CONTAINER_PATH="/data/$CSV_FILE"
+CSV_FILE="$1"
+CONTAINER="${2:-mongo}"
 
-# Überprüfen, ob die CSV-Datei existiert
-if [ ! -f "$CSV_FILE" ]; then
-  echo "CSV file $CSV_FILE does not exist."
+if [[ ! -f "$CSV_FILE" ]]; then
+  echo "CSV file $CSV_FILE does not exist." >&2
   exit 1
 fi
 
-# CSV-Datei in den Docker-Container kopieren
-docker cp $CSV_FILE $DOCKER_CONTAINER_ID:$CONTAINER_PATH
+for cmd in csvjson jq docker; do
+  if ! command -v "$cmd" >/dev/null 2>&1; then
+    echo "Error: $cmd is required but not installed." >&2
+    exit 1
+  fi
+done
 
-# CSV-Datei in die MongoDB in Docker importieren
-docker exec -i $DOCKER_CONTAINER_ID mongoimport --db open-flair --collection events --drop --type csv --headerline --file $CONTAINER_PATH --columnsHaveTypes
+WORK_DIR="$(mktemp -d)"
+trap 'rm -rf "$WORK_DIR"' EXIT
+JSON_FILE="$WORK_DIR/events.json"
 
-echo "Import completed."
+# Convert CSV (semicolon separated) to JSON and fix time field
+csvjson -d ';' "$CSV_FILE" > "$JSON_FILE"
+jq 'map(.time |= sub("^0:"; ""))' "$JSON_FILE" > "$JSON_FILE.tmp" && mv "$JSON_FILE.tmp" "$JSON_FILE"
 
-# Überprüfen, ob der Import erfolgreich war
-IMPORT_COUNT=$(docker exec -i $DOCKER_CONTAINER_ID mongosh --quiet --eval "db.getSiblingDB('open-flair').events.countDocuments()")
+# Copy file into container and import
 
-if [ "$IMPORT_COUNT" -gt 0 ]; then
-  echo "Import verification successful: $IMPORT_COUNT records imported."
-else
-  echo "Import verification failed: No records found in the database."
-fi
+docker cp "$JSON_FILE" "$CONTAINER:/tmp/events.json"
+docker exec "$CONTAINER" mongoimport --db open-flair --collection events --drop --file /tmp/events.json --jsonArray
 
-# Beispiel für das Abrufen und Anzeigen von Daten
-docker exec -i $DOCKER_CONTAINER_ID mongosh --quiet --eval "db.getSiblingDB('open-flair').events.find().limit(5).pretty()"
+echo "Import completed successfully."
