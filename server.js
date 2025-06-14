@@ -4,6 +4,10 @@ const Event = require('./models/Event'); // Ihr Event-Modell
 const path = require('path');
 const app = express();
 
+// Middleware to parse incoming JSON and URL-encoded payloads
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 mongoose.connect('mongodb://mongo:27017/open-flair', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.set('views', path.join(__dirname, 'views'));
@@ -92,13 +96,6 @@ app.delete('/admin/events/:id', (req, res) => {
 });
 
 
-  // Routes
-  app.get('/', (req, res) => {
-    Event.find().then(events => {
-      const eventsGroupedByDate = groupEventsByDate(events);
-      res.render('timetable', { eventsGroupedByDate });
-    });
-  });
 
 
 const PORT = process.env.PORT || 8080;
