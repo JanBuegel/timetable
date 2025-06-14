@@ -1,0 +1,8 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: timetable_development
+  pool: 5
+  host: db
+  username: postgres
+  password: password
